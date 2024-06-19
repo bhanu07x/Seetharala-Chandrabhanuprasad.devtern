@@ -1,0 +1,136 @@
+<html>
+<head>
+<title>TO-DO LIST</title>
+
+<style>
+h1 {
+    text-align: center;
+    font-size:60px;
+    background-color:yellow;
+}
+button{
+	background-color:green;
+	font-size:22px;
+	width:200px;
+	height: 60px;
+	border:none;
+	color:white;
+
+
+}
+.task-container{
+margin-top: 70px;
+}
+.centered{
+display:block;
+margin:10px auto
+}
+.hidden{
+display:none;
+}
+ .view{
+       position: absolute;
+    top:220;
+    left:1010;
+}
+</style>
+
+</head>
+<body style ="background-color:lightblue;">
+
+<h1>TO-DO LIST</h1>
+<h2 style="text-align: center; font-size:45px">Select your choice</h2>
+
+<button id="add" style="margin:10px 400px;">Add Task</button>
+<form action="{{url_for('show')}}" method="get">
+<button class="view">View To-Do List</button>
+</form>
+<button style="margin:10px 400px;" id="complete">Mark Task as Complete</button>
+<button id="del4">Delete Task</button>
+<div id="task" class="task-container hidden">
+<h2 style=" text-align: center;">Enter your task  details</h2>
+    <form action="{{url_for('open')}}" method="get">
+        <label style="position: absolute;top:505px;left:550px;">ID:</label>
+ <input type="text" id="taskInput2" class="centered" name="ip2">
+        <label style="position:absolute;top:530px;left:540px;">Task:</label>
+<input type="text" id="taskInput" class="centered" name="ip">
+<button id="submitdata" class="centered">ADD</button>
+    </form>
+</div>
+
+<p style="font-size:40px;text-align:center;" id="succes" {% if not name %}class="hidden"{% endif %}>{{ name }}</p>
+
+<div id="check" class="hidden" style=" position: absolute;
+            top: 400px;
+            left: 650px;">
+    <h2>Enter task ID</h2>
+    <input type="text" name="taskid" id="choose">
+    <button id="com">Complete</button>
+</div>
+
+
+<div id="del" class="hidden" style=" position: absolute;
+            top: 400px;
+            left: 650px;">
+    <h2>Enter task ID</h2>
+    <input type="text" name="taski" id="del2">
+    <button id="del3">Delete</button>
+</div>
+
+
+<script>
+
+
+document.getElementById('add').addEventListener('click',function(){
+document.getElementById('check').classList.add('hidden');
+document.getElementById('task').classList.remove('hidden');
+document.getElementById('succes').classList.add('hidden');
+document.getElementById('del').classList.add('hidden');
+
+});
+
+ document.getElementById('submitdata').addEventListener('click', function() {
+            const taskInput2=document.getElementById('taskInput2');
+            const taskInput = document.getElementById('taskInput');
+            if (taskInput.value.trim() === "" || taskInput2.value.trim() === "") {
+                alert("Please enter a task details correctly.");
+            }
+        });
+
+    document.getElementById('complete').addEventListener('click',function(){
+    document.getElementById('succes').classList.add('hidden');
+    document.getElementById('task').classList.add('hidden');
+document.getElementById('check').classList.remove('hidden');
+
+
+
+});
+   document.getElementById('com').addEventListener('click', function() {
+            const taskID = document.getElementById('choose').value;
+            if (taskID.trim() !== "") {
+                const url = "{{ url_for('comp') }}?taskid=" + encodeURIComponent(taskID);
+                window.location.href = url;
+            } else {
+                alert("Please enter a task ID.");
+            }
+        });
+
+    document.getElementById('del4').addEventListener('click',function(){
+    document.getElementById('succes').classList.add('hidden');
+    document.getElementById('task').classList.add('hidden');
+document.getElementById('check').classList.add('hidden');
+document.getElementById('del').classList.remove('hidden');
+});
+     document.getElementById('del3').addEventListener('click', function() {
+            const taskID = document.getElementById('del2').value;
+            if (taskID.trim() !== "") {
+                const url = "{{ url_for('delete') }}?taski=" + encodeURIComponent(taskID);
+                window.location.href = url;
+            } else {
+                alert("Please enter a task ID.");
+            }
+        });
+
+</script>
+</body>
+</html>
